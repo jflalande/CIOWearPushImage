@@ -30,12 +30,6 @@ public class MainActivity extends WearableActivity implements DataClient.OnDataC
     private TextView mTextView;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Wearable.getDataClient(this).addListener(this);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -47,12 +41,18 @@ public class MainActivity extends WearableActivity implements DataClient.OnDataC
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Wearable.getDataClient(this).addListener(this);
+    }
+
+    @Override
     public void onDataChanged(@NonNull DataEventBuffer dataEvents) {
         Log.i("CIO", "Data changed !");
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
-                Log.i("CIO", "Path: " + path);
+                Log.i("CIO", "  - Path: " + path);
 
                 Map<String, DataItemAsset> assets = event.getDataItem().getAssets();
 
@@ -64,7 +64,7 @@ public class MainActivity extends WearableActivity implements DataClient.OnDataC
 
 
             } else {
-              Log.i("CIO", "Event type unknown !");
+              Log.i("CIO", "  - Event type unknown !");
             }
         }
     }
@@ -119,7 +119,7 @@ public class MainActivity extends WearableActivity implements DataClient.OnDataC
         protected void onPostExecute(Bitmap bitmap) {
 
             if (bitmap != null) {
-                Log.i("CIO", "Setting background image on second page..");
+                Log.i("CIO", "  - Setting background image on second page..");
                 ImageView img = (ImageView)findViewById(R.id.imageView);
                 img.setImageBitmap(bitmap);
             }

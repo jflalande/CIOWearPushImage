@@ -40,13 +40,11 @@ public class MainActivity extends AppCompatActivity {
     public void clickSendImage(View view) {
 
         Log.i("CIO", "Sending image !");
-
         Log.i("CIO", "Generating asset...");
         Bitmap bitmap = createImage(200,200, "Go");
         ImageView img = (ImageView)findViewById(R.id.img);
         img.setImageBitmap(bitmap);
         Asset asset = toAsset(bitmap);
-
         PutDataMapRequest dataMap = PutDataMapRequest.create("/Image");
         dataMap.getDataMap().putAsset("my_image", asset);
         dataMap.getDataMap().putLong("time", new Date().getTime());
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         request.setUrgent();
 
         Log.i("CIO", "Preparing task...");
-        Task<DataItem> dataItemTask = Wearable.getDataClient(this).putDataItem(request);
+        Task<DataItem> dataItemTask = dataClient.putDataItem(request);
 
         dataItemTask.addOnSuccessListener(new OnSuccessListener<DataItem>() {
             @Override
